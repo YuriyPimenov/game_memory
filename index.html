@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Игра найти пару</title>
+    <link rel="stylesheet" href="./css/style.css">
+</head>
+<body>
+<div class="restart">
+    <button onclick="restart();">Начать заново!</button>
+
+</div>
+
+<div id="app">
+
+</div>
+
+<script src="./js/game.js"></script>
+<script src="js/card.js"></script>
+
+<script>
+    new Game('app');
+
+    function restart() {
+        var element = document.getElementById("app");
+        while (element.firstChild) {
+            element.removeChild(element.firstChild);
+        }
+        new Game('app');
+    }
+</script>
+</body>
+</html>

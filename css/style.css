@@ -1,0 +1,36 @@
+body{
+    background-color: black;
+}
+
+#app{
+    width: 650px;
+    margin: 0 auto;
+    height: 650px;
+    padding: 5px 5px;
+    display: grid;
+    grid-template-rows: repeat(auto-fit,150px);
+    grid-template-columns: repeat(auto-fit,150px);
+    grid-gap: 10px;
+}
+
+#app div{
+    width: 150px;
+    height: 150px;
+    border: 1px solid #cccccc;
+    cursor: pointer;
+    background-image: url("../img/question.png");
+
+}
+.restart{
+    display: grid;
+    grid-template-columns: 1fr;
+    justify-items: center;
+}
+.restart>button{
+    width: 200px;
+    height: 40px;
+    font-size: 18px;
+    font-family: sans-serif;
+    font-weight: bold;
+    border-radius: 4px;
+}

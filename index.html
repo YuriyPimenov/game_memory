@@ -7,7 +7,8 @@
 </head>
 <body>
 <div class="restart">
-    <button onclick="restart();">Начать заново!</button>
+    <button onclick="restart('init1');">Играть (Пары)!</button>
+    <button onclick="restart('init2');">Играть (Триплет)!</button>
 
 </div>
 
@@ -19,14 +20,14 @@
 <script src="js/card.js"></script>
 
 <script>
-    new Game('app');
+     new Game('app','init1');
 
-    function restart() {
+    function restart(init) {
         var element = document.getElementById("app");
         while (element.firstChild) {
             element.removeChild(element.firstChild);
         }
-        new Game('app');
+        new Game('app',init);
     }
 </script>
 </body>

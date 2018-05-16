@@ -1,9 +1,17 @@
 class Game{
-    constructor(id){
+    constructor(id,init){
+        this.init=init;
         //Контейнер для игры
         this.container = document.getElementById(id);
+
+        if(init=='init1')
+            this.container.style.width = '650px';
+        else
+            this.container.style.width = '475px';
+
         //Последняя картинка
-        this.last='';
+        this.last=[];
+
         //Путь до картинок
         this.dirImg = 'img/';
 
@@ -11,49 +19,80 @@ class Game{
         //Сколько кликов было выполнено по картинкам
         this.click = 0;
         //Получаем массив
-        this.count = 8;
-        this.array = this.getArray(this.count);
+        if(this.init=='init1'){
+            this.count = 8;
+            this.array = this.getArray1(this.count);
+        }else{
+            this.count = 3;
+            this.array = this.getArray2(this.count);
+        }
+
+
         //Размешиваем его
         this.array = this.random(this.array);
         //Создаём карты
         this.cards = this.setCards(id);
 
     }
+    //Смотрим какой у нас режим, и от этого зависит сколько нам можно открывать карточки
+    checkClick(){
+        if(this.init=='init1')
+            return (this.click == 0);
+        else
+            return (this.click < 2);
+    }
 
     clickCard(event,data){
         //Не будет обрабатываться событие если картинка уже открыта
-        if( event.target.dataset.state == 0 && this.flag == 1 ){
+        if( event.target.dataset.state != 0 && this.flag != 1 )
+            return;
 
-            //Если это первый клик,то открываем картинку
-            if( this.click == 0 ){
-                this.click++;
-                this.last = event.target.classList.value;
-                data.dataset.state = 1;
-                data.style.backgroundImage = `url('${this.dirImg+this.last.substr(5,1)}.png')`;
-            }
-            else{
+        //Если это первый клик,то открываем картинку
+        if( this.checkClick() ){
 
-                //Если мы отгадали
-                if( this.last == event.target.classList.value  ){
-                    let elements = document.getElementsByClassName(this.last);
-                    for(let i=0;i<elements.length;i++){
-                        elements[i].dataset.state = 2;
-                        elements[i].style.backgroundImage = `url('${this.dirImg+this.last.substr(5,1)}.png')`;
-                    }
-                }else{//Иначе показываем и через секунду прячим
-
-                    data.dataset.state = 1;
-                    data.style.backgroundImage = `url('${this.dirImg+event.target.classList.value.substr(5,1)}.png')`;
-
-                    this.flag = 0;
-
-                    setTimeout(this.hide.bind(this), 1000);
-                }
-                this.click = 0;
-            }
-
+            this.click++;
+            this.last.push(event.target.classList.value);
+            data.dataset.state = 1;
+            data.style.backgroundImage = `url('${this.dirImg+event.target.classList.value.substr(5,1)}.png')`;
         }
+        else{
+
+            //Если мы отгадали
+            if( this.checkImgs(event.target.classList.value) ){
+                let elements = document.getElementsByClassName(event.target.classList.value);
+                for(let i=0;i<elements.length;i++){
+                    elements[i].dataset.state = 2;
+                    elements[i].style.backgroundImage = `url('${this.dirImg+this.last[0].substr(5,1)}.png')`;
+                }
+                this.last = [];
+            }else{//Иначе показываем и через секунду прячим
+
+                data.dataset.state = 1;
+                data.style.backgroundImage = `url('${this.dirImg+event.target.classList.value.substr(5,1)}.png')`;
+
+                this.flag = 0;
+
+                setTimeout(this.hide.bind(this), 1000);
+                this.last = [];
+            }
+            this.click = 0;
+        }
+
+
     }
+
+    //Проверка одинаковости
+    checkImgs(value){
+        let check = true;
+        for(let i=0; i<this.last.length; i++){
+            if(this.last[i]!=value){
+                check = false;
+                break;
+            }
+        }
+        return check;
+    }
+
     hide(){
 
         let elements = document.querySelectorAll('#app div');
@@ -76,9 +115,18 @@ class Game{
         return temp;
     }
     //Создаём массив
-    getArray(n){
+    getArray1(n){
         let tempArray = [];
         for (let i=1; i<=n; i++) {
+            tempArray.push(i);
+            tempArray.push(i);
+        }
+        return tempArray
+    }
+    getArray2(n){
+        let tempArray = [];
+        for (let i=1; i<=n; i++) {
+            tempArray.push(i);
             tempArray.push(i);
             tempArray.push(i);
         }

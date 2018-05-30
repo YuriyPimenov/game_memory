@@ -44,22 +44,26 @@ class Game{
 
     clickCard(event,data){
         //Не будет обрабатываться событие если картинка уже открыта
-        if( event.target.dataset.state != 0 && this.flag != 1 )
+        if( event.target.dataset.state != 0 || this.flag != 1 )
             return;
 
         //Если это первый клик,то открываем картинку
         if( this.checkClick() ){
 
             this.click++;
-            this.last.push(event.target.classList.value);
+            this.last.push(event.target.val);
             data.dataset.state = 1;
-            data.style.backgroundImage = `url('${this.dirImg+event.target.classList.value.substr(5,1)}.png')`;
+            data.style.backgroundImage = `url('${this.dirImg+event.target.val.substr(5,1)}.png')`;
         }
         else{
 
             //Если мы отгадали
-            if( this.checkImgs(event.target.classList.value) ){
-                let elements = document.getElementsByClassName(event.target.classList.value);
+            if( this.checkImgs(event.target.val) ){
+                data.dataset.state = 1;
+                data.style.backgroundImage = `url('${this.dirImg+event.target.val.substr(5,1)}.png')`;
+                // let elements = document.getElementsByClassName(event.target.val);
+                let elements = document.querySelectorAll( 'div[data-state="1"]' );
+
                 for(let i=0;i<elements.length;i++){
                     elements[i].dataset.state = 2;
                     elements[i].style.backgroundImage = `url('${this.dirImg+this.last[0].substr(5,1)}.png')`;
@@ -68,7 +72,7 @@ class Game{
             }else{//Иначе показываем и через секунду прячим
 
                 data.dataset.state = 1;
-                data.style.backgroundImage = `url('${this.dirImg+event.target.classList.value.substr(5,1)}.png')`;
+                data.style.backgroundImage = `url('${this.dirImg+event.target.val.substr(5,1)}.png')`;
 
                 this.flag = 0;
 

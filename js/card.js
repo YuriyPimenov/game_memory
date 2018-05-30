@@ -4,7 +4,9 @@ class Card{
         this.parent = document.getElementById(id);
 
         this.card = document.createElement('div');
-        this.card.classList.add('card_'+num);
+        // this.card.classList.add('card_'+num);
+        // this.card.setAttribute('val','card_'+num);
+        this.card.val='card_'+num;
         this.parent.appendChild(this.card);
 
         this.card.setAttribute('data-state', '0');

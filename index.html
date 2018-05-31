@@ -15,19 +15,24 @@
 <div id="app">
 
 </div>
-
-<script src="./js/game.js"></script>
+<script src="./js/base.js"></script>
+<script src="js/double.js"></script>
+<script src="./js/triple.js"></script>
+<!--<script src="./js/game.js"></script>-->
 <script src="js/card.js"></script>
 
 <script>
-     new Game('app','init1');
+     new Double('app');
 
     function restart(init) {
         var element = document.getElementById("app");
         while (element.firstChild) {
             element.removeChild(element.firstChild);
         }
-        new Game('app',init);
+        if(init=='init1')
+            new Double('app');
+        else
+            new Triple('app');
     }
 </script>
 </body>
